@@ -16,7 +16,7 @@ const animationOptions = {
 export default function Result({outcome, points, onRestart}) {
   if (outcome === 's') {
     return (
-      <Container fluid>
+      <Container>
         <Row>
           <Col xs={10} className="offset-1 text-center mt-5">
             <Lottie
@@ -47,7 +47,7 @@ export default function Result({outcome, points, onRestart}) {
 
   if (outcome === 'w' || outcome === 't') {
     return (
-      <Container fluid>
+      <Container>
         <Row>
           {outcome === 'w' ? 
             <>

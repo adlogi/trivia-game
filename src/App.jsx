@@ -4,7 +4,7 @@ import Question from './components/Question';
 import Result from './components/Result';
 import './App.css';
 
-const QUESTIONS_COUNT = 1;
+const QUESTIONS_COUNT = 10;
 
 function App() {
   
@@ -19,8 +19,9 @@ function App() {
   // quiz questions/answers as retrieved from triviaDB
   const [quiz, setQuiz] = useState(null);
   const [points, setPoints] = useState(0);
+  const [level, setLevel] = useState('easy');
 
-  const fetchQuiz = (level = 1, category = 9, difficulty = 'easy') => {
+  const fetchQuiz = (difficulty = 'easy', category = 9) => {
     // example: https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple
     const url = `https://opentdb.com/api.php?amount=${QUESTIONS_COUNT}&category=${category}&difficulty=${difficulty}&type=multiple`;
     fetch(url)
@@ -43,7 +44,7 @@ function App() {
   }
 
   if (stage === -1)
-    return <HomePage onStartClick={handleStartClick} />;
+    return <HomePage level={level} onChangeLevel={setLevel} onStartClick={handleStartClick} />;
 
   if (result === 'p' && stage < QUESTIONS_COUNT) {
     return (

@@ -82,7 +82,7 @@ export default class Question extends React.Component {
   render() {
     if (this.state.stageState === 'r') {
       return (
-        <Container fluid>
+        <Container>
           <Row xs={4} className="bg-light">
             <Col className="text-center">
               Question {this.props.stage + 1}/{10}
@@ -118,7 +118,7 @@ export default class Question extends React.Component {
     }
 
     return (
-      <Container fluid>
+      <Container>
         <Row className="bg-light">
           <Col className="text-center">
             Question {this.props.stage + 1}/{10}
