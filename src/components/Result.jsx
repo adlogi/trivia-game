@@ -14,7 +14,7 @@ const animationOptions = {
   }
 };
 
-export default function Result({outcome, points, onRestart}) {
+export default function Result({outcome, score, onRestart}) {
   if (outcome === 's') {
     return (
       <Container>
@@ -34,7 +34,7 @@ export default function Result({outcome, points, onRestart}) {
             You finished the quiz successfully!
           </Col>
           <Col xs={10} className="offset-1 text-center">
-            Total: {points} points
+            Total: {score} points
           </Col>
         </Row>
         <Row>
@@ -81,7 +81,7 @@ export default function Result({outcome, points, onRestart}) {
             </Col>
           }
           <Col xs={10} className="offset-1 text-center">
-            Total: {points} points
+            Total: {score} points
           </Col>
         </Row>
         <Row>
@@ -96,6 +96,6 @@ export default function Result({outcome, points, onRestart}) {
 
 Result.propTypes = {
   outcome: PropTypes.string.isRequired,
-  points: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
   onRestart: PropTypes.func.isRequired,
 }

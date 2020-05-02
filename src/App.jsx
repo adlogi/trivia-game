@@ -19,7 +19,7 @@ function App() {
   const [screen, setScreen] = useState('i');
   // quiz questions/answers as retrieved from triviaDB
   const [quiz, setQuiz] = useState(null);
-  const [points, setPoints] = useState(0);
+  const [score, setScore] = useState(0);
   const [level, setLevel] = useState('easy');
   const [category, setCategory] = useState('9');
 
@@ -27,7 +27,7 @@ function App() {
     setScreen('i');
     setQuiz(null);
     setQuestionIndex(0);
-    setPoints(0);
+    setScore(0);
   }
 
   const handleStartClick = () => {
@@ -56,11 +56,11 @@ function App() {
     case 'p':
       return (
         <Question
-          stage={questionIndex}
+          index={questionIndex}
           total={QUESTIONS_COUNT}
           question={quiz[questionIndex]}
-          points={points}
-          setPoints={setPoints}
+          score={score}
+          setScore={setScore}
           showNextQuestion={() => setQuestionIndex(questionIndex + 1)}
           endGame={setScreen}
         />
@@ -70,7 +70,7 @@ function App() {
     case 'w':   // game ends: wrong answer
     case 't':   // game ends: time's up
       return (
-        <Result outcome={screen} points={points} onRestart={restart}></Result>
+        <Result outcome={screen} score={score} onRestart={restart}></Result>
       );
     // game intro
     case 'i':
