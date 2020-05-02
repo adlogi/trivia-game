@@ -24,6 +24,7 @@ function App() {
   const fetchQuiz = (difficulty = 'easy', category = 9) => {
     // example: https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple
     const url = `https://opentdb.com/api.php?amount=${QUESTIONS_COUNT}&category=${category}&difficulty=${difficulty}&type=multiple`;
+    console.log(url)
     fetch(url)
       .then(res => res.json())
       .then(data => {
@@ -40,7 +41,7 @@ function App() {
   }
 
   const handleStartClick = () => {
-    fetchQuiz();
+    fetchQuiz(level);
   }
 
   if (stage === -1)
