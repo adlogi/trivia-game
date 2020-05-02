@@ -5,17 +5,19 @@ import * as rightAnswer from '../media/433-checked-done.json';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
 const TIMER = 15;
+const MAX_POINTS = 100;
 
 export default class Question extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // stageState 'q': showing question
-      // stageState 'r': right answer selected
-      stageState: 'q',
+      // questionState 'q': showing question
+      // questionState 'r': showing that right answer selected
+      questionState: 'q',
       answers: [],
       timer: TIMER
     }
+    this.points = 0;
   }
 
   animationOptions = {
@@ -32,7 +34,7 @@ export default class Question extends React.Component {
       answers: shuffle([this.props.question.correct_answer, ...(this.props.question.incorrect_answers)])
     });
     this.interval = setInterval(() => {
-      if (this.state.stageState === 'q') {
+      if (this.state.questionState === 'q') {
         if (this.state.timer > 1) {
           this.setState({
             timer: this.state.timer - 1
@@ -48,7 +50,7 @@ export default class Question extends React.Component {
     if (this.props.question.question !== prevProps.question.question) {
       console.debug(this.props.question.correct_answer)
       this.setState({
-        stageState: 'q',
+        questionState: 'q',
         answers: shuffle([this.props.question.correct_answer, ...(this.props.question.incorrect_answers)]),
         timer: TIMER
       });
@@ -62,14 +64,21 @@ export default class Question extends React.Component {
   handleAnswer = e => {
     const answer = e.target.textContent;
     if (answer === decodeURIComponent(this.props.question.correct_answer)) {
-      if(this.props.total === this.props.stage + 1) {
+      if(this.props.total === this.props.index + 1) {
         this.props.endGame('s');
       } else {
         this.setState({
-          stageState: 'r'
+          questionState: 'r'
         });
       }
-      this.props.setPoints(this.props.points + 100);
+
+      // The time and points range is devided into (5) steps.
+      // When 20% of time pass, the player loses 20% of the points.
+      const STEPS = 5;
+      const timeStep = TIMER / STEPS;
+      const pointsStep = MAX_POINTS / STEPS;
+      this.points = Math.ceil(this.state.timer / timeStep) * pointsStep;
+      this.props.setScore(this.props.score + this.points);
     } else {
       this.props.endGame('w');
     }
@@ -80,12 +89,12 @@ export default class Question extends React.Component {
   }
 
   render() {
-    if (this.state.stageState === 'r') {
+    if (this.state.questionState === 'r') {
       return (
         <Container>
           <Row xs={4} className="bg-light">
             <Col className="text-center">
-              Question {this.props.stage + 1}/{10}
+              Question {this.props.index + 1}/{10}
             </Col>
           </Row>
           <Row>
@@ -104,8 +113,8 @@ export default class Question extends React.Component {
               Correct!
             </Col>
             <Col xs={10} className="offset-1 text-center">
-              You have earned 100 points<br/>
-              Total: {this.props.points} points
+              You have earned {this.points} points<br/>
+              Total: {this.props.score} points
             </Col>
           </Row>
           <Row>
@@ -121,9 +130,9 @@ export default class Question extends React.Component {
       <Container>
         <Row className="bg-light">
           <Col className="text-center">
-            Question {this.props.stage + 1}/{10}
+            Question {this.props.index + 1}/{10}
           </Col>
-          <Col>{this.props.points} Points</Col>
+          <Col>{this.props.score} Points</Col>
           <Col>Remaining Time: {this.state.timer}</Col>
         </Row>
         <Row>
@@ -145,15 +154,15 @@ export default class Question extends React.Component {
 }
 
 Question.propTypes = {
-  stage: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired,
   total: PropTypes.number.isRequired,
-  points: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
   question: PropTypes.shape({
     question: PropTypes.string,
     correct_answer: PropTypes.string,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string)
   }).isRequired,
-  setPoints: PropTypes.func.isRequired,
+  setScore: PropTypes.func.isRequired,
   showNextQuestion: PropTypes.func.isRequired,
   endGame: PropTypes.func.isRequired,
 }
