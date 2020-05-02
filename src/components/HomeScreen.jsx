@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types';
+import Lottie from 'react-lottie';
+import * as logo from '../media/11053-faq.json';
 import { Container, Row, Col, Button, DropdownButton, Dropdown } from 'react-bootstrap';
-import logo from '../logo.svg';
 
 // Categories from OpenTriviaDB
 // https://opentdb.com/api_config.php
@@ -12,17 +13,33 @@ const categories = {
   '23': 'History'
 }
 
+const animationOptions = {
+  loop: true,
+  autoplay: true, 
+  rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice'
+  }
+};
+
 export default function HomeScreen({category, onChangeCategory, level, onChangeLevel, onStartClick}) {
   return (
     <Container>
       <Row>
         <Col className="mt-5 text-center">
-          <img src={logo} className="App-logo" alt="logo" />
+          <Lottie
+            options={{
+              animationData: logo.default,
+              ...animationOptions
+            }}
+            width={'80%'}
+            isStopped={false}
+            isPaused={false}
+          />
         </Col>
       </Row>
       <Row>
         <Col className="text-center">
-          A Trivia Game
+          <h1>A Trivia Game</h1>
         </Col>
       </Row>
       <Row>
