@@ -7,8 +7,6 @@ import { QUESTIONS_COUNT } from './constants'
 import './App.css';
 
 function App() {
-  // questionIndex: 0 ... <QUESTIONS_COUNT> - 1
-  const [questionIndex, setQuestionIndex] = useState(0);
   // screen 'i': intro
   // screen 'f': fetching data
   // screen 'p': still playing
@@ -16,17 +14,26 @@ function App() {
   // screen 'w': wrong answer
   // screen 't': time's up!
   const [screen, setScreen] = useState('i');
+  // Difficulty level of the quiz
+  const [level, setLevel] = useState('easy');
+  // Quiz questions category
+  const [category, setCategory] = useState('9');
   // quiz questions/answers as retrieved from triviaDB
   const [quiz, setQuiz] = useState(null);
+  // questionIndex: 0 ... <QUESTIONS_COUNT> - 1
+  const [questionIndex, setQuestionIndex] = useState(0);
+  // Total score
   const [score, setScore] = useState(0);
-  const [level, setLevel] = useState('easy');
-  const [category, setCategory] = useState('9');
+  // Has hint been used (available only once)
+  const [hintUsed, setHintUsed] = useState(false);
 
+  // Show home screen again to start a new quiz
   const restart = () => {
     setScreen('i');
     setQuiz(null);
     setQuestionIndex(0);
     setScore(0);
+    setHintUsed(false);
   }
 
   const handleStartClick = () => {
@@ -37,13 +44,13 @@ function App() {
   const fetchQuiz = (difficulty = 'easy', category = '9') => {
     // example: https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple&encode=url3986
     const url = `https://opentdb.com/api.php?amount=${QUESTIONS_COUNT}&category=${category}&difficulty=${difficulty}&type=multiple&encode=url3986`;
-    console.log(url)
+    console.debug(url);
     fetch(url)
       .then(res => res.json())
       .then(data => {
         setQuiz(data.results);
-        setScreen('p');
         setQuestionIndex(0);
+        setScreen('p');
       });
   }
 
@@ -57,13 +64,14 @@ function App() {
         <Question
           index={questionIndex}
           question={quiz[questionIndex]}
+          hintUsed={hintUsed}
           score={score}
+          useHint={() => setHintUsed(true)}
           setScore={setScore}
           showNextQuestion={() => setQuestionIndex(questionIndex + 1)}
           endGame={setScreen}
         />
       );
-    
     case 's':   // game ends: success
     case 'w':   // game ends: wrong answer
     case 't':   // game ends: time's up

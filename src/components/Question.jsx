@@ -27,9 +27,10 @@ export default class Question extends React.Component {
   };
 
   componentDidMount() {
-    console.debug(this.props.question.correct_answer)
+    const { question, endGame } = this.props;
+    console.debug(question.correct_answer);
     this.setState({
-      answers: shuffle([this.props.question.correct_answer, ...(this.props.question.incorrect_answers)])
+      answers: shuffle([question.correct_answer, ...(question.incorrect_answers)])
     });
     this.interval = setInterval(() => {
       if (this.state.questionState === 'q') {
@@ -38,18 +39,19 @@ export default class Question extends React.Component {
             timer: this.state.timer - 1
           });
         } else {
-          this.props.endGame('t');
+          endGame('t');
         }
       }
     }, 1000);
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.question.question !== prevProps.question.question) {
-      console.debug(this.props.question.correct_answer)
+    const { question } = this.props;
+    if (question.question !== prevProps.question.question) {
+      console.debug(question.correct_answer);
       this.setState({
         questionState: 'q',
-        answers: shuffle([this.props.question.correct_answer, ...(this.props.question.incorrect_answers)]),
+        answers: shuffle([question.correct_answer, ...(question.incorrect_answers)]),
         timer: TIMER
       });
     }
@@ -59,11 +61,30 @@ export default class Question extends React.Component {
     clearInterval(this.interval);
   }
 
+  applyHint = () => {
+    const { question, useHint } = this.props;
+    const answers = document.querySelectorAll('.answer>div>button');
+    let hidden = 0;
+    // randomly find two incorrect answers to hide
+    while (hidden < 2) {
+      const i = Math.floor(Math.random() * 4);
+      if (
+        answers[i].textContent !== decodeURIComponent(question.correct_answer) &&
+        !answers[i].classList.contains('invisible')
+      ) {
+        answers[i].classList.add('invisible');
+        hidden++;
+      }
+    }
+    useHint();
+  }
+
   handleAnswer = e => {
+    const { index, question, score, setScore, endGame } = this.props;
     const answer = e.target.textContent;
-    if (answer === decodeURIComponent(this.props.question.correct_answer)) {
-      if(QUESTIONS_COUNT === this.props.index + 1) {
-        this.props.endGame('s');
+    if (answer === decodeURIComponent(question.correct_answer)) {
+      if(QUESTIONS_COUNT === index + 1) {
+        endGame('s');
       } else {
         this.setState({
           questionState: 'r'
@@ -76,24 +97,56 @@ export default class Question extends React.Component {
       const timeStep = TIMER / STEPS;
       const pointsStep = MAX_POINTS / STEPS;
       this.points = Math.ceil(this.state.timer / timeStep) * pointsStep;
-      this.props.setScore(this.props.score + this.points);
+      setScore(score + this.points);
     } else {
-      this.props.endGame('w');
+      endGame('w');
     }
   }
 
-  showNextQuestion = () => {
-    this.props.showNextQuestion();
-  }
-
   render() {
-    if (this.state.questionState === 'r') {
+    const { index, question, hintUsed, score, showNextQuestion } = this.props;
+
+    if (this.state.questionState === 'q') {
+      // show a new question
       return (
         <Container>
-          <Row xs={4} className="bg-light">
-            <Col className="text-center">
-              Question {this.props.index + 1}/{10}
+          <Row className="bg-info">
+            <Col className="text-center">Question {index + 1}/{10}</Col>
+            <Col className="text-center">{score} Points</Col>
+            <Col className="text-center">Remaining Time: {this.state.timer}</Col>
+          </Row>
+          <Row>
+            <Col xs={10} className="offset-1 text-center mt-2 mb-5">
+              {decodeURIComponent(question.question)}
             </Col>
+          </Row>
+          {this.state.answers.map((answer, indx) => (
+            <Row key={indx} className="answer">
+              <Col xs={10} className="offset-1 p-2 text-center">
+                <Button
+                  variant="secondary w-100"
+                  onClick={this.handleAnswer}
+                >
+                  {decodeURIComponent(answer)}
+                </Button>
+              </Col>
+            </Row>
+          ))}
+          {!hintUsed ? (
+            <Row className="mt-5">
+              <Col xs={10} className="offset-1 p-2 text-center">
+                <Button variant="info w-100" onClick={this.applyHint}>50:50 Hint!</Button>
+              </Col>
+            </Row>
+          ) : null}
+        </Container>
+      )
+    } else {
+      // if the right answer selected, show new score
+      return (
+        <Container>
+          <Row className="bg-info">
+            <Col xs={4} className="text-center">Question {index + 1}/{10}</Col>
           </Row>
           <Row>
             <Col xs={10} className="offset-1 text-center">
@@ -112,53 +165,30 @@ export default class Question extends React.Component {
             </Col>
             <Col xs={10} className="offset-1 text-center">
               You have earned {this.points} points<br/>
-              Total: {this.props.score} points
+              Total: {score} points
             </Col>
           </Row>
           <Row>
             <Col xs={10} className="offset-1 p-2 text-center">
-              <Button variant="secondary w-100" onClick={this.showNextQuestion}>Next Question</Button>
+              <Button variant="secondary w-100" onClick={showNextQuestion}>Next Question</Button>
             </Col>
           </Row>
         </Container>
       );
     }
-
-    return (
-      <Container>
-        <Row className="bg-light">
-          <Col className="text-center">
-            Question {this.props.index + 1}/{10}
-          </Col>
-          <Col>{this.props.score} Points</Col>
-          <Col>Remaining Time: {this.state.timer}</Col>
-        </Row>
-        <Row>
-          <Col xs={10} className="offset-1 text-center mt-2 mb-5">
-            {decodeURIComponent(this.props.question.question)}
-          </Col>
-        </Row>
-        {this.state.answers.map((answer, index) => (
-          <Row key={index}>
-            <Col xs={10} className="offset-1 p-2 text-center">
-              <Button variant="secondary w-100" onClick={this.handleAnswer}>{decodeURIComponent(answer)}</Button>
-            </Col>
-          </Row>
-        ))}
-        
-      </Container>
-    )
   }
 }
 
 Question.propTypes = {
   index: PropTypes.number.isRequired,
-  score: PropTypes.number.isRequired,
   question: PropTypes.shape({
     question: PropTypes.string,
     correct_answer: PropTypes.string,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string)
   }).isRequired,
+  hintUsed: PropTypes.bool.isRequired,
+  score: PropTypes.number.isRequired,
+  useHint: PropTypes.func.isRequired,
   setScore: PropTypes.func.isRequired,
   showNextQuestion: PropTypes.func.isRequired,
   endGame: PropTypes.func.isRequired,
