@@ -20,6 +20,7 @@ function App() {
   const [quiz, setQuiz] = useState(null);
   const [points, setPoints] = useState(0);
   const [level, setLevel] = useState('easy');
+  const [category, setCategory] = useState(9);
 
   const fetchQuiz = (difficulty = 'easy', category = 9) => {
     // example: https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple
@@ -41,11 +42,19 @@ function App() {
   }
 
   const handleStartClick = () => {
-    fetchQuiz(level);
+    fetchQuiz(level, category);
   }
 
   if (stage === -1)
-    return <HomePage level={level} onChangeLevel={setLevel} onStartClick={handleStartClick} />;
+    return (
+      <HomePage
+        category={category}
+        onChangeCategory={setCategory}
+        level={level}
+        onChangeLevel={setLevel}
+        onStartClick={handleStartClick}
+      />
+    );
 
   if (result === 'p' && stage < QUESTIONS_COUNT) {
     return (

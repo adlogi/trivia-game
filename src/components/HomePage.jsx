@@ -1,8 +1,14 @@
 import React from 'react'
-import { Container, Row, Col, Button, DropdownButton, Dropdown, ButtonGroup } from 'react-bootstrap';
+import { Container, Row, Col, Button, DropdownButton, Dropdown } from 'react-bootstrap';
 import logo from '../logo.svg';
 
-export default function HomePage({level, onChangeLevel, onStartClick}) {
+const categories = {
+  9: 'General Knowledge',
+  17: 'Science & Nature',
+  18: 'Computers',
+  23: 'History'
+}
+export default function HomePage({category, onChangeCategory, level, onChangeLevel, onStartClick}) {
   return (
     <Container>
       <Row>
@@ -21,7 +27,16 @@ export default function HomePage({level, onChangeLevel, onStartClick}) {
         </Col>
       </Row>
       <Row>
-        <Col xs={10} className="offset-1 my-5 text-center">
+        <Col xs={10} className="offset-1 my-2 text-center">
+          <DropdownButton title={categories[category]} variant="secondary w-100">
+            {Object.keys(categories).map(key => 
+              <Dropdown.Item key={key} onClick={() => onChangeCategory(key)} className="w-100">{categories[key]}</Dropdown.Item>
+            )}
+          </DropdownButton>
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={10} className="offset-1 my-2 text-center">
           <DropdownButton title={capitalizeFirst(level)} variant="secondary w-100">
             <Dropdown.Item onClick={() => onChangeLevel('easy')} className="w-100">Easy</Dropdown.Item>
             <Dropdown.Item onClick={() => onChangeLevel('medium')} className="w-100">Medium</Dropdown.Item>
