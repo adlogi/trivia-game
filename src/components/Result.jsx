@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Lottie from 'react-lottie';
 import * as timesUp from '../media/6640-times-up.json';
 import * as wrongAnswer from '../media/4698-wrong-answer.json';
-import * as rightAnswer from '../media/433-checked-done.json';
+import * as success from '../media/10193-cup.json';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
 const animationOptions = {
@@ -22,7 +22,7 @@ export default function Result({outcome, points, onRestart}) {
           <Col xs={10} className="offset-1 text-center mt-5">
             <Lottie
               options={{
-                animationData: rightAnswer.default,
+                animationData: success.default,
                 ...animationOptions
               }}
               width={'60%'}
