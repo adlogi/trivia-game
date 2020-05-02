@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Lottie from 'react-lottie';
 import * as timesUp from '../media/6640-times-up.json';
 import * as wrongAnswer from '../media/4698-wrong-answer.json';
@@ -91,4 +92,10 @@ export default function Result({outcome, points, onRestart}) {
       </Container>
     );
   }
+}
+
+Result.propTypes = {
+  outcome: PropTypes.string.isRequired,
+  points: PropTypes.number.isRequired,
+  onRestart: PropTypes.func.isRequired,
 }

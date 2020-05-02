@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Lottie from 'react-lottie';
 import * as rightAnswer from '../media/433-checked-done.json';
 import { Container, Row, Col, Button } from 'react-bootstrap';
@@ -26,6 +27,7 @@ export default class Question extends React.Component {
   };
 
   componentDidMount() {
+    console.debug(this.props.question)
     this.setState({
       answers: shuffle([this.props.question.correct_answer, ...(this.props.question.incorrect_answers)])
     });
@@ -36,9 +38,6 @@ export default class Question extends React.Component {
             timer: this.state.timer - 1
           });
         } else {
-          // this.setState({
-          //   stageState: 't'
-          // });
           this.props.endGame('t');
         }
       }
@@ -47,6 +46,7 @@ export default class Question extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.question.question !== prevProps.question.question) {
+      console.debug(this.props.question)
       this.setState({
         stageState: 'q',
         answers: shuffle([this.props.question.correct_answer, ...(this.props.question.incorrect_answers)]),
@@ -142,6 +142,20 @@ export default class Question extends React.Component {
       </Container>
     )
   }
+}
+
+Question.propTypes = {
+  stage: PropTypes.number.isRequired,
+  total: PropTypes.number.isRequired,
+  points: PropTypes.number.isRequired,
+  question: PropTypes.shape({
+    question: PropTypes.string,
+    correct_answer: PropTypes.string,
+    incorrect_answers: PropTypes.arrayOf(PropTypes.string)
+  }).isRequired,
+  setPoints: PropTypes.func.isRequired,
+  showNextQuestion: PropTypes.func.isRequired,
+  endGame: PropTypes.func.isRequired,
 }
 
 function shuffle(array) {

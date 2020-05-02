@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import HomePage from './components/HomePage';
+import HomeScreen from './components/HomeScreen';
 import Question from './components/Question';
 import Result from './components/Result';
 import './App.css';
@@ -20,9 +20,9 @@ function App() {
   const [quiz, setQuiz] = useState(null);
   const [points, setPoints] = useState(0);
   const [level, setLevel] = useState('easy');
-  const [category, setCategory] = useState(9);
+  const [category, setCategory] = useState('9');
 
-  const fetchQuiz = (difficulty = 'easy', category = 9) => {
+  const fetchQuiz = (difficulty = 'easy', category = '9') => {
     // example: https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple
     const url = `https://opentdb.com/api.php?amount=${QUESTIONS_COUNT}&category=${category}&difficulty=${difficulty}&type=multiple`;
     console.log(url)
@@ -47,7 +47,7 @@ function App() {
 
   if (stage === -1)
     return (
-      <HomePage
+      <HomeScreen
         category={category}
         onChangeCategory={setCategory}
         level={level}

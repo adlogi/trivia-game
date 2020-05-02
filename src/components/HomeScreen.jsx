@@ -1,14 +1,18 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import { Container, Row, Col, Button, DropdownButton, Dropdown } from 'react-bootstrap';
 import logo from '../logo.svg';
 
+// Categories from OpenTriviaDB
+// https://opentdb.com/api_config.php
 const categories = {
-  9: 'General Knowledge',
-  17: 'Science & Nature',
-  18: 'Computers',
-  23: 'History'
+  '9': 'General Knowledge',
+  '17': 'Science & Nature',
+  '18': 'Computers',
+  '23': 'History'
 }
-export default function HomePage({category, onChangeCategory, level, onChangeLevel, onStartClick}) {
+
+export default function HomeScreen({category, onChangeCategory, level, onChangeLevel, onStartClick}) {
   return (
     <Container>
       <Row>
@@ -46,6 +50,14 @@ export default function HomePage({category, onChangeCategory, level, onChangeLev
       </Row>
     </Container>
   )
+}
+
+HomeScreen.propTypes = {
+  category: PropTypes.string.isRequired,
+  onChangeCategory: PropTypes.func.isRequired,
+  level: PropTypes.string.isRequired,
+  onChangeLevel: PropTypes.func.isRequired,
+  onStartClick: PropTypes.func.isRequired
 }
 
 function capitalizeFirst(str) {
