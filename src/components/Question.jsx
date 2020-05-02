@@ -27,7 +27,7 @@ export default class Question extends React.Component {
   };
 
   componentDidMount() {
-    console.debug(this.props.question)
+    console.debug(this.props.question.correct_answer)
     this.setState({
       answers: shuffle([this.props.question.correct_answer, ...(this.props.question.incorrect_answers)])
     });
@@ -46,7 +46,7 @@ export default class Question extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.question.question !== prevProps.question.question) {
-      console.debug(this.props.question)
+      console.debug(this.props.question.correct_answer)
       this.setState({
         stageState: 'q',
         answers: shuffle([this.props.question.correct_answer, ...(this.props.question.incorrect_answers)]),
@@ -61,7 +61,7 @@ export default class Question extends React.Component {
 
   handleAnswer = e => {
     const answer = e.target.textContent;
-    if (answer === this.props.question.correct_answer) {
+    if (answer === decodeURIComponent(this.props.question.correct_answer)) {
       if(this.props.total === this.props.stage + 1) {
         this.props.endGame('s');
       } else {
@@ -128,13 +128,13 @@ export default class Question extends React.Component {
         </Row>
         <Row>
           <Col xs={10} className="offset-1 text-center mt-2 mb-5">
-            {this.props.question.question}
+            {decodeURIComponent(this.props.question.question)}
           </Col>
         </Row>
         {this.state.answers.map((answer, index) => (
           <Row key={index}>
             <Col xs={10} className="offset-1 p-2 text-center">
-              <Button variant="secondary w-100" onClick={this.handleAnswer}>{answer}</Button>
+              <Button variant="secondary w-100" onClick={this.handleAnswer}>{decodeURIComponent(answer)}</Button>
             </Col>
           </Row>
         ))}

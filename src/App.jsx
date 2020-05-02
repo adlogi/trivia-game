@@ -23,8 +23,8 @@ function App() {
   const [category, setCategory] = useState('9');
 
   const fetchQuiz = (difficulty = 'easy', category = '9') => {
-    // example: https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple
-    const url = `https://opentdb.com/api.php?amount=${QUESTIONS_COUNT}&category=${category}&difficulty=${difficulty}&type=multiple`;
+    // example: https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple&encode=url3986
+    const url = `https://opentdb.com/api.php?amount=${QUESTIONS_COUNT}&category=${category}&difficulty=${difficulty}&type=multiple&encode=url3986`;
     console.log(url)
     fetch(url)
       .then(res => res.json())
