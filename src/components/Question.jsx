@@ -110,10 +110,10 @@ export default class Question extends React.Component {
       // show a new question
       return (
         <Container>
-          <Row className="bg-info">
-            <Col className="text-center">Question {index + 1}/{10}</Col>
-            <Col className="text-center">{score} Points</Col>
-            <Col className="text-center">Remaining Time: {this.state.timer}</Col>
+          <Row className="bg-info header">
+            <Col className="d-flex align-items-center text-center">Question {index + 1}/{10}</Col>
+            <Col className="d-flex align-items-center text-center">{score} Points</Col>
+            <Col className="d-flex align-items-center text-center">Remaining Time: {this.state.timer}</Col>
           </Row>
           <Row>
             <Col xs={10} className="offset-1 text-center mt-2 mb-5">
@@ -145,8 +145,8 @@ export default class Question extends React.Component {
       // if the right answer selected, show new score
       return (
         <Container>
-          <Row className="bg-info">
-            <Col xs={4} className="text-center">Question {index + 1}/{10}</Col>
+          <Row className="bg-info header">
+            <Col xs={4} className="d-flex align-items-center text-center">Question {index + 1}/{10}</Col>
           </Row>
           <Row>
             <Col xs={10} className="offset-1 text-center">
