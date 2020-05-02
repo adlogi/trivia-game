@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Lottie from 'react-lottie';
+import { QUESTIONS_COUNT, TIMER, MAX_POINTS } from '../constants'
 import * as rightAnswer from '../media/433-checked-done.json';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-
-const TIMER = 15;
-const MAX_POINTS = 100;
 
 export default class Question extends React.Component {
   constructor(props) {
@@ -64,7 +62,7 @@ export default class Question extends React.Component {
   handleAnswer = e => {
     const answer = e.target.textContent;
     if (answer === decodeURIComponent(this.props.question.correct_answer)) {
-      if(this.props.total === this.props.index + 1) {
+      if(QUESTIONS_COUNT === this.props.index + 1) {
         this.props.endGame('s');
       } else {
         this.setState({
@@ -155,7 +153,6 @@ export default class Question extends React.Component {
 
 Question.propTypes = {
   index: PropTypes.number.isRequired,
-  total: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
   question: PropTypes.shape({
     question: PropTypes.string,

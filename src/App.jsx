@@ -3,9 +3,8 @@ import HomeScreen from './components/HomeScreen';
 import Loading from './components/Loading';
 import Question from './components/Question';
 import Result from './components/Result';
+import { QUESTIONS_COUNT } from './constants'
 import './App.css';
-
-const QUESTIONS_COUNT = 10;
 
 function App() {
   // questionIndex: 0 ... <QUESTIONS_COUNT> - 1
@@ -57,7 +56,6 @@ function App() {
       return (
         <Question
           index={questionIndex}
-          total={QUESTIONS_COUNT}
           question={quiz[questionIndex]}
           score={score}
           setScore={setScore}
