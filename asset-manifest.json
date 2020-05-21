@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/trivia-app/static/css/main.6811623d.chunk.css",
+    "main.js": "/trivia-app/static/js/main.81a43816.chunk.js",
+    "main.js.map": "/trivia-app/static/js/main.81a43816.chunk.js.map",
+    "runtime-main.js": "/trivia-app/static/js/runtime-main.8863014f.js",
+    "runtime-main.js.map": "/trivia-app/static/js/runtime-main.8863014f.js.map",
+    "static/css/2.69121389.chunk.css": "/trivia-app/static/css/2.69121389.chunk.css",
+    "static/js/2.9cdca840.chunk.js": "/trivia-app/static/js/2.9cdca840.chunk.js",
+    "static/js/2.9cdca840.chunk.js.map": "/trivia-app/static/js/2.9cdca840.chunk.js.map",
+    "index.html": "/trivia-app/index.html",
+    "precache-manifest.eb58d5fd5c352e166375fd9f7a962257.js": "/trivia-app/precache-manifest.eb58d5fd5c352e166375fd9f7a962257.js",
+    "service-worker.js": "/trivia-app/service-worker.js",
+    "static/css/2.69121389.chunk.css.map": "/trivia-app/static/css/2.69121389.chunk.css.map",
+    "static/css/main.6811623d.chunk.css.map": "/trivia-app/static/css/main.6811623d.chunk.css.map",
+    "static/js/2.9cdca840.chunk.js.LICENSE.txt": "/trivia-app/static/js/2.9cdca840.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.8863014f.js",
+    "static/css/2.69121389.chunk.css",
+    "static/js/2.9cdca840.chunk.js",
+    "static/css/main.6811623d.chunk.css",
+    "static/js/main.81a43816.chunk.js"
+  ]
+}
