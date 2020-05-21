@@ -8,4 +8,4 @@ Details: https://gitlab.com/snippets/1936262#trivia-game
 
 ### Live
 
-https://adlogi-trivia-game.netlify.app/
+https://adlogi.github.io/trivia-app/
